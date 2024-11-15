@@ -1,0 +1,17 @@
+@model Producto
+
+<section class="container mt-5">
+        <section class="card">
+            <section class="card-header">
+                <h3>Confirmar Eliminación</h3>
+            </section>
+            <section class="card-body">
+                <p>¿Estás seguro de que deseas eliminar el producto <strong>@Model.Descripcion</strong>?</p>
+                <form asp-controller="Producto" asp-action="EliminarProducto" method="post">
+                    <input type="hidden" name="IdProducto" value="@Model.IdProducto" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a asp-action="ListarProductos" asp-controller="Producto" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </section>
+        </section>
+    </section>
