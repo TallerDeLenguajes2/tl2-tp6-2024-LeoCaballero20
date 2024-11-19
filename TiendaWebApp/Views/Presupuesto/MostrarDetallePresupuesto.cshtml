@@ -1,0 +1,23 @@
+@model Presupuesto
+
+<section class="container mt-5">
+        <h1 class="text-center mb-4">Detalle de Presupuesto de @Model.NombreDestinatario</h1>
+        <section class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (PresupuestoDetalle pd in Model.Detalle) {
+                    <tr>
+                        <td>@pd.Producto.Descripcion</td>
+                        <td>@pd.Cantidad</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </section>
+</section>
