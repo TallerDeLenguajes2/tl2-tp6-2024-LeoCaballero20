@@ -21,6 +21,14 @@ public class PresupuestoRepository : IPresupuestoRepository
 
     public void EliminarPresupuesto(int id)
     {
+        queryString = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @id";
+        using (SqliteConnection connection = new(connectionString)) {
+            SqliteCommand command = new(queryString, connection);
+            connection.Open();
+            command.Parameters.AddWithValue("@id", id);
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
         queryString = "DELETE FROM Presupuestos WHERE idPresupuesto = @id";
         using (SqliteConnection connection = new(connectionString)) {
             SqliteCommand command = new(queryString, connection);
@@ -91,4 +99,5 @@ public class PresupuestoRepository : IPresupuestoRepository
         }
         return presupuesto;
     }
+
 }

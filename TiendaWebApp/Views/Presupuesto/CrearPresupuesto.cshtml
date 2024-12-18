@@ -1,0 +1,29 @@
+<div class="container mt-5">
+        <h1 class="text-center">Crear Presupuesto</h1>
+        <form asp-controller="Presupuesto" asp-action="CrearPresupuesto" method="post">
+            <div class="mb-3">
+                <label for="recipientName" class="form-label">Nombre del Destinatario</label>
+                <input type="text" class="form-control" name="nombreDestinatario" placeholder="Ingrese el nombre del destinatario" required>
+            </div>
+            <div id="productsSection">
+                <div class="product-group mb-3">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="productSelect" class="form-label">Producto</label>
+                            <select class="form-select" name="idProducto" required>
+                                <option value="" disabled selected>Seleccione un producto</option>
+                                @foreach (Producto p in (new ProductoRepository()).ListarProductos()) {
+                                    <option value="@p.IdProducto">@p.Descripcion</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="productQuantity" class="form-label">Cantidad</label>
+                            <input type="number" name="cantidad" class="form-control" placeholder="Ingrese la cantidad" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Crear Presupuesto</button>
+        </form>
+    </div>

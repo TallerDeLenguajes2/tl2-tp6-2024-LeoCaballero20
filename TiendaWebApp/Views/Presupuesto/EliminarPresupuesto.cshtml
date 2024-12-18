@@ -1,0 +1,17 @@
+@model Presupuesto
+
+<section class="container mt-5">
+        <section class="card">
+            <section class="card-header">
+                <h3>Confirmar Eliminación</h3>
+            </section>
+            <section class="card-body">
+                <p>¿Estás seguro de que deseas eliminar el presupuesto de <strong>@Model.NombreDestinatario</strong>?</p>
+                <form asp-controller="Presupuesto" asp-action="EliminarPresupuesto" method="post">
+                    <input type="hidden" name="IdPresupuesto" value="@Model.IdPresupuesto" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a asp-action="ListarPresupuestos" asp-controller="Presupuesto" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </section>
+        </section>
+    </section>

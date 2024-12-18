@@ -31,7 +31,7 @@ public class ProductoController : Controller
         return RedirectToAction("ListarProductos");
     }
 
-    [HttpGet("Modificar/{id}")]
+    [HttpGet("ModificarProducto/{id}")]
 
     public ActionResult ModificarProducto(int id) {
         Producto p = repositorio.ObtenerProducto(id);
@@ -45,14 +45,14 @@ public class ProductoController : Controller
         return RedirectToAction("ListarProductos");
     }
 
-    [HttpGet("Eliminar/{id}")]
+    [HttpGet("EliminarProducto/{id}")]
 
     public ActionResult EliminarProducto(int id) {
         Producto p = repositorio.ObtenerProducto(id);
         return View(p);
     }
 
-    [HttpPost("Eliminar/{producto}")]
+    [HttpPost("EliminarProducto/{producto}")]
 
     public ActionResult EliminarProducto(Producto p) {
         repositorio.EliminarProducto(p.IdProducto);
