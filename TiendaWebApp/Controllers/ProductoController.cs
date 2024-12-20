@@ -38,7 +38,7 @@ public class ProductoController : Controller
         return View(p);
     }
 
-    [HttpPost("Modificar/{producto}")]
+    [HttpPost("ModificarProducto/{producto}")]
 
     public ActionResult ModificarProducto(Producto p) {
         repositorio.ModificarProducto(p.IdProducto, p);

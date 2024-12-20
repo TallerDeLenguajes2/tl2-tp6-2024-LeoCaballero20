@@ -55,4 +55,20 @@ public class PresupuestoController : Controller {
         repositorio.EliminarPresupuesto(pre.IdPresupuesto);
         return RedirectToAction("ListarPresupuestos");
     }
+
+    [HttpGet("AgregarProducto/{id}")]
+
+    public ActionResult AgregarProducto(int id) {
+        Presupuesto pre = repositorio.ObtenerDetallePresupuesto(id);
+        return View(pre);
+    }
+
+    [HttpPost("AgregarProducto/{presupuesto}")]
+
+    public ActionResult AgregarProducto(AgregarProductoViewModel agregModel) {
+        Producto pro = new ProductoRepository().ObtenerProducto(agregModel.IdProducto);
+        repositorio.AgregarDetallePresupuesto(agregModel.IdPresupuesto, pro, agregModel.Cantidad);
+        return RedirectToAction("MostrarDetallePresupuesto", new {id = agregModel.IdPresupuesto});
+    }
+
 }

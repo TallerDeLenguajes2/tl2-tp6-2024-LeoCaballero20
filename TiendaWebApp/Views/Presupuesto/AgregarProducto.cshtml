@@ -1,0 +1,25 @@
+@model Presupuesto
+
+<form asp-controller="Presupuesto" asp-action="AgregarProducto" method="post">
+    <div id="productsSection">
+                <div class="product-group mb-3">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="productSelect" class="form-label">Producto</label>
+                            <select class="form-select" name="idProducto" required>
+                                <option value="" disabled selected>Seleccione un producto</option>
+                                @foreach (Producto p in (new ProductoRepository()).ListarProductos()) {
+                                    <option value="@p.IdProducto">@p.Descripcion</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="productQuantity" class="form-label">Cantidad</label>
+                            <input type="number" name="cantidad" class="form-control" placeholder="Ingrese la cantidad" required>
+                        </div>
+                    </div>
+                </div>
+    </div>
+    <input type="hidden" name="idPresupuesto" value=@Model.IdPresupuesto>
+    <button type="submit" class="btn btn-success">Confirmar</button>
+</form>
