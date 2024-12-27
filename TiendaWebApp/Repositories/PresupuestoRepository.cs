@@ -7,12 +7,12 @@ public class PresupuestoRepository : IPresupuestoRepository
     private string queryString;
     public void CrearPresupuesto(Presupuesto presupuesto)
     {
-        queryString = "INSERT INTO Presupuestos (idPresupuesto, NombreDestinatario, FechaCreacion) VALUES (@id, @nombreDest, @fecha);";
+        queryString = "INSERT INTO Presupuestos (idPresupuesto, FechaCreacion, ClienteId) VALUES (@id, @fecha, @idCli);";
         using (SqliteConnection connection = new(connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@id", presupuesto.IdPresupuesto);
-            command.Parameters.AddWithValue("@nombreDest", presupuesto.NombreDestinatario);
+            command.Parameters.AddWithValue("@idCli", presupuesto.IdCliente);
             command.Parameters.AddWithValue("@fecha", DateTime.Now.ToString("yyyy-M-d"));
             command.ExecuteNonQuery();
             connection.Close();
@@ -49,8 +49,8 @@ public class PresupuestoRepository : IPresupuestoRepository
             using (SqliteDataReader reader = command.ExecuteReader()) {
                 while (reader.Read()) {
                     int id = reader.GetInt32(0);
-                    string nombreDestinatario = reader[1].ToString();
-                    Presupuesto presupuesto = new(id, nombreDestinatario);
+                    int idCliente = reader.GetInt32(2);
+                    Presupuesto presupuesto = new(id, idCliente);
                     listaPresupuestos.Add(presupuesto);
                 }
             }
@@ -77,7 +77,7 @@ public class PresupuestoRepository : IPresupuestoRepository
     {
         Presupuesto presupuesto = new();
         List<PresupuestoDetalle> listaDetalles = new();
-        queryString = "SELECT NombreDestinatario, idProducto, Cantidad, Descripcion, Precio FROM Presupuestos INNER JOIN PresupuestosDetalle USING (idPresupuesto) INNER JOIN Productos USING (idProducto) WHERE idPresupuesto = @id";
+        queryString = "SELECT ClienteId, idProducto, Cantidad, Descripcion, Precio FROM Presupuestos INNER JOIN PresupuestosDetalle USING (idPresupuesto) INNER JOIN Productos USING (idProducto) WHERE idPresupuesto = @id";
         using (SqliteConnection connection = new(connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
@@ -85,7 +85,7 @@ public class PresupuestoRepository : IPresupuestoRepository
             using (SqliteDataReader reader = command.ExecuteReader()) {
                 presupuesto.IdPresupuesto = id;
                 while (reader.Read()) {    
-                    presupuesto.NombreDestinatario = reader[0].ToString();
+                    presupuesto.IdCliente = reader.GetInt32(0);
                     string descripProducto = reader[3].ToString();
                     int precio = reader.GetInt32(4);
                     int idProducto = reader.GetInt32(1);

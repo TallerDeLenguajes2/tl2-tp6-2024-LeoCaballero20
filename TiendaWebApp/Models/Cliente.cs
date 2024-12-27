@@ -1,0 +1,18 @@
+public class Cliente {
+    private int clienteId;
+    private string nombre;
+    private string email;
+    private string telefono;
+    public Cliente() {}
+    public Cliente(int id, string nombre, string email, string telefono) {
+        clienteId = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+    }
+
+    public int ClienteId { get => clienteId; set => clienteId = value; }
+    public string Nombre { get => nombre; set => nombre = value; }
+    public string Email { get => email; set => email = value; }
+    public string Telefono { get => telefono; set => telefono = value; }
+}
