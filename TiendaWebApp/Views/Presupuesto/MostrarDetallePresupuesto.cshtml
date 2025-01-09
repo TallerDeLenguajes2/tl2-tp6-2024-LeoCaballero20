@@ -1,7 +1,7 @@
 @model Presupuesto
 
 <section class="container mt-5">
-        <h1 class="text-center mb-4">Detalle de presupuesto de @Model.NombreDestinatario</h1>
+        <h1 class="text-center mb-4">Detalle de presupuesto de @(new ClienteRepository().ObtenerCliente(Model.IdCliente).Nombre)</h1>
         <section class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="table-dark">

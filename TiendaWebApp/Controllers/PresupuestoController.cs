@@ -31,8 +31,13 @@ public class PresupuestoController : Controller {
     [HttpPost]
 
     public ActionResult CrearPresupuesto(CrearPresupuestoViewModel presupModelo) {
-        Presupuesto ultimoPresup = repositorio.ListarPresupuestos().MaxBy(x => x.IdPresupuesto);
-        Presupuesto presup = new(ultimoPresup.IdPresupuesto+1, presupModelo.NombreDestinatario);
+        Presupuesto ultimoPresup = new();
+        if (repositorio.ListarPresupuestos().Count()!=0) {
+            ultimoPresup = repositorio.ListarPresupuestos().MaxBy(x => x.IdPresupuesto);
+        } else {
+            ultimoPresup.IdPresupuesto = 0;
+        }
+        Presupuesto presup = new(ultimoPresup.IdPresupuesto+1, presupModelo.IdCliente);
         Producto prod = new ProductoRepository().ObtenerProducto(presupModelo.IdProducto);
         PresupuestoDetalle detalle = new(prod, presupModelo.Cantidad);
         presup.Detalle.Add(detalle);
@@ -66,8 +71,10 @@ public class PresupuestoController : Controller {
     [HttpPost("AgregarProducto/{presupuesto}")]
 
     public ActionResult AgregarProducto(AgregarProductoViewModel agregModel) {
-        Producto pro = new ProductoRepository().ObtenerProducto(agregModel.IdProducto);
-        repositorio.AgregarDetallePresupuesto(agregModel.IdPresupuesto, pro, agregModel.Cantidad);
+        if (ModelState.IsValid) {
+            Producto pro = new ProductoRepository().ObtenerProducto(agregModel.IdProducto);
+            repositorio.AgregarDetallePresupuesto(agregModel.IdPresupuesto, pro, agregModel.Cantidad);
+        }
         return RedirectToAction("MostrarDetallePresupuesto", new {id = agregModel.IdPresupuesto});
     }
 

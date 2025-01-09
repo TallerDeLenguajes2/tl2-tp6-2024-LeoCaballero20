@@ -20,7 +20,7 @@ public class ClienteRepository : IClienteRepository
 
     public void EliminarCliente(int id)
     {
-        queryString = "DELETE FROM Clientes WHERE ClienteID = @id";
+        queryString = "DELETE FROM Clientes WHERE ClienteId = @id";
         using (SqliteConnection connection = new(connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();

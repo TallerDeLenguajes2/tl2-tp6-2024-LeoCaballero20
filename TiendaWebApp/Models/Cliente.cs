@@ -1,7 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 public class Cliente {
     private int clienteId;
+
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
     private string nombre;
+
+    [EmailAddress(ErrorMessage = "Formato de email incorrecto.")]
     private string email;
+
+    [Phone(ErrorMessage = "Formato de teléfono incorrecto.")]
     private string telefono;
     public Cliente() {}
     public Cliente(int id, string nombre, string email, string telefono) {

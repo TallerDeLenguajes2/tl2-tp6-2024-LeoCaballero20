@@ -25,9 +25,11 @@ public class ProductoController : Controller
     [HttpPost]
 
     public ActionResult CrearProducto(string descripcion, int precio) {
-        Producto p = repositorio.ListarProductos().MaxBy(x => x.IdProducto);
-        Producto producto = new(p.IdProducto+1,descripcion,precio);
-        repositorio.CrearProducto(producto);
+        if (ModelState.IsValid) {
+            Producto p = repositorio.ListarProductos().MaxBy(x => x.IdProducto);
+            Producto producto = new(p.IdProducto+1,descripcion,precio);
+            repositorio.CrearProducto(producto);
+        }
         return RedirectToAction("ListarProductos");
     }
 

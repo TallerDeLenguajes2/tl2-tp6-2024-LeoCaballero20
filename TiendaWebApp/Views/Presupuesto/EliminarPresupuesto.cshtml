@@ -6,7 +6,7 @@
                 <h3>Confirmar Eliminación</h3>
             </section>
             <section class="card-body">
-                <p>¿Estás seguro de que deseas eliminar el presupuesto de <strong>@Model.NombreDestinatario</strong>?</p>
+                <p>¿Estás seguro de que deseas eliminar el presupuesto de <strong>@(new ClienteRepository().ObtenerCliente(Model.IdCliente).Nombre)</strong>?</p>
                 <form asp-controller="Presupuesto" asp-action="EliminarPresupuesto" method="post">
                     <input type="hidden" name="IdPresupuesto" value="@Model.IdPresupuesto" />
                     <button type="submit" class="btn btn-danger">Eliminar</button>

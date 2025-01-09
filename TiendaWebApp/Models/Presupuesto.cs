@@ -6,6 +6,7 @@ public class Presupuesto {
     public Presupuesto(int id, int idCli) {
         idPresupuesto = id;
         idCliente = idCli;
+        detalle = new();
     }
 
     public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
