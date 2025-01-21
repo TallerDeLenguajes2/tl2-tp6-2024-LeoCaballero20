@@ -1,8 +1,40 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
+    var user = ViewData["Nombre"];
+    var accessLevel = ViewData["AccessLevels"];
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Bienvenido @user </h1>
+<div class="card w-100">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Menú Principal</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <a class="btn btn-success w-100" asp-area="" asp-controller="Presupuesto" asp-action="ListarPresupuestos">
+                Presupuestos
+            </a>
+        </li>
+        @if (accessLevel.ToString() == "Administrador")
+        {
+            <li class="list-group-item">
+                <a class="btn btn-success w-100" asp-area="" asp-controller="Producto" asp-action="ListarProductos">
+                    Productos
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a class="btn btn-success w-100 " asp-area="" asp-controller="Cliente" asp-action="ListarClientes">
+                    Clientes
+                </a>
+            </li>
+        }
+        <li class="list-group-item">
+                <a class="btn btn-danger w-100" href="@Url.Action("Logout","Login")">Cerrar Sesion</a>
+            </li>
+        
+    </ul>
+</div>
+
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

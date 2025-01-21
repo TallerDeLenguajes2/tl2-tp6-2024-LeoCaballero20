@@ -4,16 +4,16 @@ namespace TiendaWebApp.Controllers;
 
 public class ProductoController : Controller 
 {
-    private ProductoRepository repositorio;
+    private IProductoRepository _repositorio;
 
-    public ProductoController() {
-        repositorio = new();
+    public ProductoController(IProductoRepository repo) {
+        _repositorio = repo;
     }
 
     [HttpGet]
 
     public ActionResult ListarProductos() {
-        return View(repositorio.ListarProductos());
+        return View(_repositorio.ListarProductos());
     }
 
     [HttpGet]
@@ -26,9 +26,9 @@ public class ProductoController : Controller
 
     public ActionResult CrearProducto(string descripcion, int precio) {
         if (ModelState.IsValid) {
-            Producto p = repositorio.ListarProductos().MaxBy(x => x.IdProducto);
+            Producto p = _repositorio.ListarProductos().MaxBy(x => x.IdProducto);
             Producto producto = new(p.IdProducto+1,descripcion,precio);
-            repositorio.CrearProducto(producto);
+            _repositorio.CrearProducto(producto);
         }
         return RedirectToAction("ListarProductos");
     }
@@ -36,28 +36,28 @@ public class ProductoController : Controller
     [HttpGet("ModificarProducto/{id}")]
 
     public ActionResult ModificarProducto(int id) {
-        Producto p = repositorio.ObtenerProducto(id);
+        Producto p = _repositorio.ObtenerProducto(id);
         return View(p);
     }
 
     [HttpPost("ModificarProducto/{producto}")]
 
     public ActionResult ModificarProducto(Producto p) {
-        repositorio.ModificarProducto(p.IdProducto, p);
+        _repositorio.ModificarProducto(p.IdProducto, p);
         return RedirectToAction("ListarProductos");
     }
 
     [HttpGet("EliminarProducto/{id}")]
 
     public ActionResult EliminarProducto(int id) {
-        Producto p = repositorio.ObtenerProducto(id);
+        Producto p = _repositorio.ObtenerProducto(id);
         return View(p);
     }
 
     [HttpPost("EliminarProducto/{producto}")]
 
     public ActionResult EliminarProducto(Producto p) {
-        repositorio.EliminarProducto(p.IdProducto);
+        _repositorio.EliminarProducto(p.IdProducto);
         return RedirectToAction("ListarProductos");
     }
 
