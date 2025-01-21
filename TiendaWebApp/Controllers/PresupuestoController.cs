@@ -12,12 +12,14 @@ public class PresupuestoController : Controller {
     [HttpGet]
 
     public ActionResult ListarPresupuestos() {
+        ViewData["AccessLevels"] = HttpContext.Session.GetString("AccessLevels");
         return View(_repositorio.ListarPresupuestos());
     }
 
     [HttpGet("DetallePresupuesto/{id}")]
 
     public ActionResult MostrarDetallePresupuesto(int id) {
+        ViewData["AccessLevels"] = HttpContext.Session.GetString("AccessLevels");
         Presupuesto p = _repositorio.ObtenerDetallePresupuesto(id);
         return View(p);
     }

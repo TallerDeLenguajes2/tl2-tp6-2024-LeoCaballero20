@@ -27,7 +27,7 @@ public class LoginController : Controller
             return View("Index", model);
         }
         var usuario  = _iUsuarioRepository.ObtenerUsuario(model.Username,model.Password);
-        if(usuario != null){
+        if(usuario.Nombre != null){
             HttpContext.Session.SetString("IsAuthenticated", "true");
             HttpContext.Session.SetString("Username", usuario.NombreUsuario);
             HttpContext.Session.SetString("Nombre",usuario.Nombre);
