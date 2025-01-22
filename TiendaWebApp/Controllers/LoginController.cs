@@ -5,9 +5,12 @@ public class LoginController : Controller
 {
     private readonly IUsuarioRepository _iUsuarioRepository;
 
-    public LoginController(IUsuarioRepository iUsuarioRepository)
+    private readonly ILogger<LoginController> _logger;
+
+    public LoginController(IUsuarioRepository iUsuarioRepository, ILogger<LoginController> logger)
     {
         _iUsuarioRepository = iUsuarioRepository;
+        _logger = logger;
     }
     public IActionResult Index(){
         if(HttpContext.Session.GetString("IsAuthenticated") == "true"){
@@ -21,23 +24,27 @@ public class LoginController : Controller
     }
     [HttpPost]
     public IActionResult Login(LoginViewModel model){
-         if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
-        {
-            model.ErrorMessage = "Por favor ingrese su nombre de usuario y contraseña.";
-            return View("Index", model);
-        }
-        var usuario  = _iUsuarioRepository.ObtenerUsuario(model.Username,model.Password);
-        if(usuario.Nombre != null){
-            HttpContext.Session.SetString("IsAuthenticated", "true");
-            HttpContext.Session.SetString("Username", usuario.NombreUsuario);
-            HttpContext.Session.SetString("Nombre",usuario.Nombre);
-            HttpContext.Session.SetString("AccessLevels", usuario.Rol);
+        try {
+            var usuario  = _iUsuarioRepository.ObtenerUsuario(model.Username,model.Password);
+            if (model.Username != null) {
+                HttpContext.Session.SetString("IsAuthenticated", "true");
+                HttpContext.Session.SetString("Username", usuario.NombreUsuario);
+                HttpContext.Session.SetString("Nombre",usuario.Nombre);
+                HttpContext.Session.SetString("AccessLevels", usuario.Rol);
+                _logger.LogInformation("El usuario {usu} ingresó correctamente", model.Username);
+            } else {
+                _logger.LogError("Intento de acceso inválido. Usuario ingresado: {usu}. Contraseña ingresada: {pass}",model.Username, model.Password);
+            }
             return RedirectToAction("Index","Home");
         }
-        model.ErrorMessage = "Credenciales invalidas";
-        model.IsAuthenticated = false;
-        return View("Index",model);
+        catch (Exception ex){
+            _logger.LogError(ex.ToString());
+            model.ErrorMessage = "Credenciales invalidas";
+            model.IsAuthenticated = false;
+            return View("Index",model);
+        }
     }
+
     public IActionResult Logout()
     {
         // Limpiar la sesión
