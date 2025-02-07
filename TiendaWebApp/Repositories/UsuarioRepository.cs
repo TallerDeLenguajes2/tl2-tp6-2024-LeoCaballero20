@@ -1,12 +1,16 @@
 using Microsoft.Data.Sqlite;
 public class UsuarioRepository : IUsuarioRepository
 {
-    private string connectionString = "Data Source=db/Tienda.db;Cache=Shared";
+    private string _connectionString;
     private string queryString;
+
+    public UsuarioRepository(string connectionString) {
+        _connectionString = connectionString;
+    }
     public void CrearUsuario(Usuario nuevoUsuario)
     {
         queryString = "INSERT INTO Usuarios (IdUsuario, Nombre, Usuario, Contraseña, Rol) VALUES (@id, @nombre, @usu, @pass, @rol);";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@id", nuevoUsuario.IdUsuario);
@@ -22,7 +26,7 @@ public class UsuarioRepository : IUsuarioRepository
     public void EliminarUsuario(int id)
     {
         queryString = "DELETE FROM Usuarios WHERE IdUsuario = @id";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@id", id);
@@ -35,7 +39,7 @@ public class UsuarioRepository : IUsuarioRepository
     {
         queryString = "SELECT * FROM Usuarios";
         List<Usuario> listaUsuarios = new();
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             using (SqliteDataReader reader = command.ExecuteReader()) {
@@ -57,7 +61,7 @@ public class UsuarioRepository : IUsuarioRepository
     public void ModificarUsuario(int id, Usuario Usuario)
     {
         queryString = "UPDATE Usuarios SET Nombre = @nombre, Usuario = @usu, Contraseña = @pass, Rol = @rol WHERE IdUsuario = @id";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@nombre", Usuario.Nombre);
@@ -73,7 +77,7 @@ public class UsuarioRepository : IUsuarioRepository
     {
         Usuario Usuario = new();
         queryString = "SELECT * FROM Usuarios WHERE Usuario = @user AND Contraseña = @pass";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@user", username);
