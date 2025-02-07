@@ -3,12 +3,16 @@ using Microsoft.Data.Sqlite;
 
 public class ProductoRepository : IProductoRepository
 {
-    private string connectionString = "Data Source=db/Tienda.db;Cache=Shared";
+    private string _connectionString;
     private string queryString;
+
+    public ProductoRepository(string connectionString) {
+        _connectionString = connectionString;
+    }
     public void CrearProducto(Producto producto)
     {
         queryString = "INSERT INTO Productos (idProducto, Descripcion, Precio) VALUES (@id, @descripcion, @precio);";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@id", producto.IdProducto);
@@ -21,7 +25,7 @@ public class ProductoRepository : IProductoRepository
     public void EliminarProducto(int id)
     {
         queryString = "DELETE FROM Productos WHERE idProducto = @id";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@id", id);
@@ -34,7 +38,7 @@ public class ProductoRepository : IProductoRepository
     {
         List<Producto> listaProductos = new();
         queryString = "SELECT * FROM Productos";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             using (SqliteDataReader reader = command.ExecuteReader()) {
@@ -54,7 +58,7 @@ public class ProductoRepository : IProductoRepository
     public void ModificarProducto(int id, Producto producto)
     {
         queryString = "UPDATE Productos SET Descripcion = @descripcion, Precio = @precio WHERE idProducto = @id";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@descripcion", producto.Descripcion);
@@ -69,7 +73,7 @@ public class ProductoRepository : IProductoRepository
     {
         Producto producto = new();
         queryString = "SELECT * FROM Productos WHERE idProducto = @id";
-        using (SqliteConnection connection = new(connectionString)) {
+        using (SqliteConnection connection = new(_connectionString)) {
             SqliteCommand command = new(queryString, connection);
             connection.Open();
             command.Parameters.AddWithValue("@id", id);

@@ -17,7 +17,7 @@
                             <label for="productSelect" class="form-label">Producto</label>
                             <select class="form-select" name="IdProducto" required>
                                 <option value="" disabled selected>Seleccione un producto</option>
-                                @foreach (Producto p in (new ProductoRepository()).ListarProductos()) {
+                                @foreach (Producto p in (new ProductoRepository("Data Source=db/Tienda.db;Cache=Shared")).ListarProductos()) {
                                     <option value="@p.IdProducto">@p.Descripcion</option>
                                 }
                             </select>

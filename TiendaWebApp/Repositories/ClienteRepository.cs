@@ -3,6 +3,7 @@ public class ClienteRepository : IClienteRepository
 {
     private string connectionString = "Data Source=db/Tienda.db;Cache=Shared";
     private string queryString;
+    
     public void CrearCliente(Cliente nuevoCliente)
     {
         queryString = "INSERT INTO Clientes (ClienteId, Nombre, Email, Telefono) VALUES (@id, @nombre, @email, @tel);";
